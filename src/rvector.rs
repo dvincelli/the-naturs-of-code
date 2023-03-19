@@ -1,17 +1,17 @@
 #[derive(Debug,Copy,Clone)] 
 pub struct RVector {
     pub x: f32,
-    pub y: f32, 
+    pub y: f32,
     pub z: f32,
 }
 
 impl RVector {
     pub fn new(x: f32, y: f32, z: f32) -> Self {
-        RVector {x: x, y: y, z: z }
+        RVector {x, y, z }
     }
 
     pub fn new2d(x: f32, y: f32) -> Self {
-        RVector {x: x, y: y, z: 0.0 }
+        RVector {x, y, z: 0.0 }
     }
 
     pub fn set2d(&mut self, x: f32, y: f32) {
@@ -50,6 +50,34 @@ impl RVector {
         self.y *= m;
         self.z *= m;
     }
+
+    pub fn mag(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    pub fn normalize(&mut self) {
+        let m = self.mag();
+        if m != 0.0 && m != 1.0 {
+            self.div(m);
+        }
+    }
+
+    pub fn random2d() -> Self {
+        RVector {
+            x: rand::random(),
+            y: rand::random(),
+            z: 0.0,
+        }
+    }
+
+    pub fn random3d() -> Self {
+        RVector {
+            x: rand::random(),
+            y: rand::random(),
+            z: rand::random(),
+        }
+    }
+
 }
 
 #[cfg(test)]
@@ -63,6 +91,15 @@ mod tests {
         assert_eq!(v.x, 1.0);
         assert_eq!(v.y, 2.0);
         assert_eq!(v.z, 3.0);
+    }
+
+    #[test]
+    fn test_new2d() {
+        let v = RVector::new2d(1.0, 2.0);
+
+        assert_eq!(v.x, 1.0);
+        assert_eq!(v.y, 2.0);
+        assert_eq!(v.z, 0.0);
     }
 
     #[test]
@@ -86,6 +123,23 @@ mod tests {
         assert_eq!(v.x, 1.5);
         assert_eq!(v.y, 1.5);
         assert_eq!(v.z, 1.5);
+    }
+
+    #[test]
+    fn test_mag() {
+        let v = RVector::new(1.0, 1.0, 1.0);
+        assert_eq!(v.mag(), 1.7320508);
+    }
+
+    #[test]
+    fn test_normalize() {
+        let mut v = RVector::new(0.5, 0.2, 0.1);
+
+        v.normalize();
+
+        assert_eq!(v.x, 0.912871);
+        assert_eq!(v.y, 0.3651484);
+        assert_eq!(v.z, 0.1825742);
     }
 }
 /*
@@ -307,8 +361,6 @@ mod tests {
     * @return magnitude (length) of the vector
     * @see PVector#magSq()
     */
-   public float mag() {
-     return (float) Math.sqrt(x*x + y*y + z*z);
    }
  
  
