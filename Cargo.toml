@@ -1,5 +1,5 @@
 [package]
-name = "rsimulate"
+name = "the-naturs-of-code"
 version = "0.1.0"
 authors = ["David Vincelli <david.vincelli@gmail.com>"]
 edition = "2021"

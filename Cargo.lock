@@ -80,14 +80,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rsimulate"
-version = "0.1.0"
-dependencies = [
- "rand",
- "sdl2",
-]
-
-[[package]]
 name = "sdl2"
 version = "0.35.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -109,6 +101,14 @@ dependencies = [
  "cfg-if",
  "libc",
  "version-compare",
+]
+
+[[package]]
+name = "the-naturs-of-code"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "sdl2",
 ]
 
 [[package]]

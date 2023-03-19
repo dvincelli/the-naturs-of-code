@@ -1,16 +1,14 @@
 extern crate sdl2;
 
-mod rvector;
-mod mover;
-
 use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
 
 use rand::prelude::*;
-use crate::rvector::RVector;
-use crate::mover::Mover;
+
+use the_naturs_of_code::rvector::RVector;
+use the_naturs_of_code::mover::Mover;
 
 const WIDTH: u32 = 1024;
 const HEIGHT: u32 = 768;
@@ -28,7 +26,7 @@ pub fn main() {
     let mut movers : Vec<Mover> = Vec::<Mover>::with_capacity(20);
 
     let mut wind = RVector::new2d(0.01, 0.0);
-    let gravity = RVector::new2d(0.0, 0.1);
+    let gravity = RVector::new2d(0.0, 0.2);
 
     for i in 0..movers.capacity() {
         let x = (WIDTH as f32) * rand::random::<f32>();

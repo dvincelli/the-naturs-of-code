@@ -1,11 +1,11 @@
 use rand::prelude::*;
 
-use crate::RVector;
+use crate::rvector::RVector;
 
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 use sdl2::pixels::Color;
-use crate::sdl2::gfx::primitives::DrawRenderer;
+use sdl2::gfx::primitives::DrawRenderer;
 
 
 #[derive(Debug)]
