@@ -1,12 +1,11 @@
-use rand::prelude::*;
+// use rand::prelude::*;
 
 use crate::rvector::RVector;
 
+use sdl2::gfx::primitives::DrawRenderer;
+use sdl2::pixels::Color;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
-use sdl2::pixels::Color;
-use sdl2::gfx::primitives::DrawRenderer;
-
 
 #[derive(Debug)]
 pub struct Mover {
@@ -22,7 +21,7 @@ impl Mover {
             location: RVector::new2d(x, y),
             velocity: RVector::new2d(0.0, 0.0),
             acceleration: RVector::new2d(0.0, 0.0),
-            mass: mass
+            mass: mass,
         }
     }
 
@@ -38,14 +37,15 @@ impl Mover {
         self.acceleration.mult(0.0);
     }
 
-    pub fn display(&self, canvas: &mut Canvas<Window>) {
+    pub fn display(&self, canvas: &mut Canvas<Window>) -> Result<(), String> {
         canvas.ellipse(
             (self.location.x as i16).try_into().unwrap(),
             (self.location.y as i16).try_into().unwrap(),
             ((self.mass * 16.0) as i16).try_into().unwrap(),
             ((self.mass * 16.0) as i16).try_into().unwrap(),
-            Color::RGB(255, 0, 0)
-        );
+            Color::RGB(255, 0, 0),
+        )?;
+        Ok(())
     }
 
     pub fn check_edges(&mut self, width: f32, height: f32) {
@@ -64,17 +64,16 @@ impl Mover {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_mover() {
-        let mut m1 = Mover::new(rand::random(), rand::random());
-        let mut m2 = Mover::new(rand::random(), rand::random());
+        let mut m1 = Mover::new(1.0, rand::random(), rand::random());
+        let mut m2 = Mover::new(1.0, rand::random(), rand::random());
 
-        let wind = RVector::new2d(1.0, 0.0);
+        let wind = RVector::new2d(0.1, 0.0);
 
         m1.apply_force(&wind);
         m2.apply_force(&wind);

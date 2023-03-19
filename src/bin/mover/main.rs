@@ -1,12 +1,14 @@
-// Example 2.2: forces acting on many objects
-// Example 2.3: Gravity scaled by mass
+// Example 2.1, forces acting on a single object
 
+extern crate rand;
 extern crate sdl2;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use std::time::Duration;
+
+//use rand::prelude::*;
 
 use the_naturs_of_code::mover::Mover;
 use the_naturs_of_code::rvector::RVector;
@@ -20,7 +22,7 @@ pub fn main() {
 
     let window = video_subsystem
         .window(
-            "Example 2.2: Forces acting on many objects",
+            "Example 2.1: Forces",
             WIDTH.try_into().unwrap(),
             HEIGHT.try_into().unwrap(),
         )
@@ -28,16 +30,12 @@ pub fn main() {
         .build()
         .unwrap();
 
-    let mut movers: Vec<Mover> = Vec::<Mover>::with_capacity(20);
+    let wind = RVector::new2d(0.01, 0.0);
+    let gravity = RVector::new2d(0.0, 0.2);
 
-    let mut wind = RVector::new2d(0.01, 0.0);
-    let gravity = RVector::new2d(0.0, 0.8);
-
-    for _i in 0..movers.capacity() {
-        // let x = (WIDTH as f32) * rand::random::<f32>();
-        // let y = (HEIGHT as f32) * rand::random::<f32>();
-        movers.push(Mover::new(rand::random::<f32>() * 5.0 + 1.0, 0.0, 0.0))
-    }
+    let x = (WIDTH as f32) * rand::random::<f32>();
+    let y = (HEIGHT as f32) * rand::random::<f32>();
+    let mut m = Mover::new(rand::random::<f32>() * 5.0 + 1.0, x, y);
 
     let mut canvas = window.into_canvas().build().unwrap();
 
@@ -61,17 +59,11 @@ pub fn main() {
             }
         }
 
-        for m in &mut movers {
-            m.apply_force(&wind);
-            m.apply_force(&gravity);
-            m.update();
-            m.display(&mut canvas).ok();
-            m.check_edges(WIDTH as f32, HEIGHT as f32);
-        }
-
-        if rand::random() {
-            wind.set2d(rand::random::<f32>() * 0.02, 0.0);
-        }
+        m.apply_force(&wind);
+        m.apply_force(&gravity);
+        m.update();
+        m.display(&mut canvas).ok();
+        m.check_edges(WIDTH as f32, HEIGHT as f32);
 
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
