@@ -5,12 +5,9 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use std::time::Duration;
-use sdl2::gfx::primitives::DrawRenderer;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 
-use crate::mover::Mover;
-use crate::rvector::RVector;
 
 const TICKS_FOR_NEXT_FRAME: u32 = 1000/60; // 60 FPS
 
@@ -38,8 +35,8 @@ pub trait World {
         let window = video_subsystem
             .window(
                 self.title(),
-                w.try_into().unwrap(),
-                h.try_into().unwrap(),
+                w,
+                h,
             )
             .position_centered()
             .build()
