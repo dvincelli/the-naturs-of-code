@@ -39,6 +39,12 @@ impl RVector {
         self.z += v.z;
     }
 
+    pub fn sub(&mut self, v: &RVector) {
+        self.x -= v.x;
+        self.y -= v.y;
+        self.z -= v.z;
+    }
+
     pub fn div(&mut self, d: f32) {
         self.x /= d;
         self.y /= d;

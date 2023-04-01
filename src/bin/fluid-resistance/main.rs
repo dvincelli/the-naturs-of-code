@@ -16,7 +16,7 @@ impl World for WorldWithFluidResistance {
         let mut movers: Vec<RefCell<Mover>> = Vec::<RefCell<Mover>>::with_capacity(20);
 
         // TODO get dimensions from window size or take them as arguments
-        let liquid = Liquid::new(0.0, 768.0/2.0, 1024.0, 768.0/2.0, 0.1);
+        let liquid = Liquid::new(0.0, 768.0/2.0, 1024.0, 768.0/2.0, 0.12);
 
         for i in 0..movers.capacity() {
             let mass = rand::random::<f32>() * 5.0 + 1.0;
