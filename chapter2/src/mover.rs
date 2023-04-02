@@ -1,3 +1,5 @@
+extern crate sdl2;
+use std::convert::TryInto;
 // use rand::prelude::*;
 
 use crate::rvector::RVector;

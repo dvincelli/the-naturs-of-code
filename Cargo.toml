@@ -1,15 +1,5 @@
-[package]
-name = "the-naturs-of-code"
-version = "0.1.0"
-authors = ["David Vincelli <david.vincelli@gmail.com>"]
-edition = "2021"
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-rand = "0.8.5"
-
-[dependencies.sdl2]
-version = "0.35.2"
-default-features = false
-features = ["gfx"]
+members=[
+  "chapter2"
+]
