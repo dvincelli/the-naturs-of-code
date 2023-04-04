@@ -1,5 +1,8 @@
 [workspace]
 
 members=[
-  "chapter2"
+  "chapter2",
+  "chapter3"
 ]
+
+resolver="2"

@@ -1,0 +1,8 @@
+[package]
+name = "noc-chapter3"
+version = "0.1.0"
+authors = ["David Vincelli <david.vincelli@gmail.com>"]
+rust_version = "1.68"
+
+[dependencies]
+nannou = "0.18.1"
