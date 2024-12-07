@@ -1,5 +1,3 @@
-// use rand::prelude::*;
-
 use crate::rvector::RVector;
 
 use sdl2::gfx::primitives::DrawRenderer;
@@ -21,12 +19,12 @@ impl Mover {
             location: RVector::new2d(x, y),
             velocity: RVector::new2d(0.0, 0.0),
             acceleration: RVector::new2d(0.0, 0.0),
-            mass: mass,
+            mass,
         }
     }
 
     pub fn apply_force(&mut self, force: &RVector) {
-        let mut force = force.clone();
+        let mut force = *force;
         force.div(self.mass);
         self.acceleration.add(&force);
     }

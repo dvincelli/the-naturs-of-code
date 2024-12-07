@@ -1,8 +1,7 @@
+use std::cell::RefCell;
 
-use std::{cell::RefCell};
-
-use the_naturs_of_code::{world::World, rvector::RVector, mover::Mover, liquid::Liquid};
-use sdl2::{render::Canvas, pixels::Color};
+use sdl2::{pixels::Color, render::Canvas};
+use the_naturs_of_code::{liquid::Liquid, mover::Mover, rvector::RVector, world::World};
 
 struct WorldWithFluidResistance {
     movers: Vec<RefCell<Mover>>,
@@ -16,24 +15,26 @@ impl World for WorldWithFluidResistance {
         let mut movers: Vec<RefCell<Mover>> = Vec::<RefCell<Mover>>::with_capacity(20);
 
         // TODO get dimensions from window size or take them as arguments
-        let liquid = Liquid::new(0.0, 768.0/2.0, 1024.0, 768.0/2.0, 0.12);
+        let liquid = Liquid::new(0.0, 768.0 / 2.0, 1024.0, 768.0 / 2.0, 0.12);
 
         for i in 0..movers.capacity() {
             let mass = rand::random::<f32>() * 5.0 + 1.0;
-            movers.push(
-                RefCell::new(Mover::new(mass, 1024.0/20.0 * (i as f32) + mass/2.0, 0.0 + mass/2.0))
-            );
+            movers.push(RefCell::new(Mover::new(
+                mass,
+                1024.0 / 20.0 * (i as f32) + mass / 2.0,
+                0.0 + mass / 2.0,
+            )));
         }
 
         WorldWithFluidResistance {
-            movers: movers,
+            movers,
             liquid,
             gravity_coeff: 0.2,
-            friction_coeff: 0.01
-         }
+            friction_coeff: 0.01,
+        }
     }
 
-    fn display(&self, canvas: &mut Canvas<sdl2::video::Window>) -> () {
+    fn display(&self, canvas: &mut Canvas<sdl2::video::Window>) {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
 
@@ -44,15 +45,14 @@ impl World for WorldWithFluidResistance {
             m.display(canvas).ok();
         }
 
-
         canvas.present();
     }
 
-    fn setup(&self, canvas: &mut Canvas<sdl2::video::Window>) -> () {
-        ()
+    fn setup(&self, canvas: &mut Canvas<sdl2::video::Window>) {
+        
     }
 
-    fn update(&mut self, delta_time: u32) -> () {
+    fn update(&mut self, delta_time: u32) {
         let (w, h) = self.size();
         for rc in self.movers.iter_mut() {
             let m = rc.get_mut();
@@ -66,7 +66,7 @@ impl World for WorldWithFluidResistance {
             let gravity = RVector::new2d(0.0, self.gravity_coeff * m.mass);
             m.apply_force(&gravity);
 
-            let mut friction = m.velocity.clone();
+            let mut friction = m.velocity;
             friction.mult(-1.0);
             friction.normalize();
             friction.mult(self.friction_coeff);
@@ -79,6 +79,6 @@ impl World for WorldWithFluidResistance {
 }
 
 fn main() {
-    let mut world : WorldWithFluidResistance = World::new();
+    let mut world: WorldWithFluidResistance = World::new();
     world.run();
 }

@@ -1,8 +1,7 @@
-use std::borrow::Borrow;
 
 use sdl2::gfx::primitives::DrawRenderer;
-use sdl2::{pixels::Color, render::Canvas};
 use sdl2::video::Window;
+use sdl2::{pixels::Color, render::Canvas};
 
 use crate::mover::Mover;
 use crate::rvector::RVector;
@@ -11,7 +10,7 @@ use crate::rvector::RVector;
 pub struct Attractor {
     mass: f32,
     location: RVector,
-    g_coef: f32
+    g_coef: f32,
 }
 
 impl Attractor {
@@ -19,7 +18,7 @@ impl Attractor {
         Attractor {
             location: RVector::new2d(x, y),
             mass,
-            g_coef: 1.0
+            g_coef: 1.0,
         }
     }
 
@@ -35,10 +34,10 @@ impl Attractor {
     }
 
     pub fn attract(&self, mover: &Mover) -> RVector {
-        let mut force = self.location.clone();
+        let mut force = self.location;
         force.sub(&mover.location);
 
-        let distance = constrain(force.mag(), 5.0, 25.0);    
+        let distance = constrain(force.mag(), 5.0, 25.0);
         force.normalize();
 
         let strength = (self.mass * mover.mass * self.g_coef) / distance.powi(2);
@@ -46,8 +45,6 @@ impl Attractor {
 
         force
     }
-
-
 }
 
 fn constrain(v: f32, min: f32, max: f32) -> f32 {
