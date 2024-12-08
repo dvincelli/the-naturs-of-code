@@ -56,3 +56,34 @@ fn constrain(v: f32, min: f32, max: f32) -> f32 {
         v
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_new_attractor() {
+        let attractor = Attractor::new(10.0, 20.0, 5.0);
+        assert_eq!(attractor.mass, 5.0);
+        assert_eq!(attractor.location.x, 10.0);
+        assert_eq!(attractor.location.y, 20.0);
+        assert_eq!(attractor.g_coef, 1.0);
+    }
+    
+    #[test]
+    fn test_constrain() {
+        assert_eq!(constrain(15.0, 10.0, 20.0), 15.0);
+        assert_eq!(constrain(5.0, 10.0, 20.0), 10.0);
+        assert_eq!(constrain(25.0, 10.0, 20.0), 20.0);
+    }
+    
+    #[test]
+    fn test_attract() {
+        let attractor = Attractor::new(0.0, 0.0, 10.0);
+        let mover = Mover::new(5.0, 5.0, 1.0);
+        let force = attractor.attract(&mover);
+        
+        assert_eq!(force.x, -1.885732);
+        assert_eq!(force.y, -0.3771464);
+    }
+}
