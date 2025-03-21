@@ -4,6 +4,7 @@ use sdl2::gfx::primitives::DrawRenderer;
 use sdl2::pixels::Color;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
+use std::error::Error;
 
 #[derive(Debug)]
 pub struct Mover {
@@ -35,7 +36,7 @@ impl Mover {
         self.acceleration.mult(0.0);
     }
 
-    pub fn display(&self, canvas: &mut Canvas<Window>) -> Result<(), String> {
+    pub fn display(&self, canvas: &mut Canvas<Window>) -> Result<(), Box<dyn Error>> {
         canvas.ellipse(
             (self.location.x as i16).try_into().unwrap(),
             (self.location.y as i16).try_into().unwrap(),
@@ -67,19 +68,42 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_mover() {
-        let mut m1 = Mover::new(1.0, rand::random(), rand::random());
-        let mut m2 = Mover::new(1.0, rand::random(), rand::random());
+    fn test_mover_new() {
+        let m = Mover::new(2.0, 10.0, 20.0);
+        assert_eq!(m.mass, 2.0);
+        assert_eq!(m.location.x, 10.0);
+        assert_eq!(m.location.y, 20.0);
+        assert_eq!(m.velocity.x, 0.0);
+        assert_eq!(m.velocity.y, 0.0);
+        assert_eq!(m.acceleration.x, 0.0);
+        assert_eq!(m.acceleration.y, 0.0);
+    }
 
-        let wind = RVector::new2d(0.1, 0.0);
+    #[test]
+    fn test_mover_apply_force() {
+        let mut m = Mover::new(1.0, 0.0, 0.0);
+        let force = RVector::new2d(0.5, 0.5);
 
-        m1.apply_force(&wind);
-        m2.apply_force(&wind);
+        m.apply_force(&force);
 
-        assert_eq!(m1.acceleration.x, 0.1);
-        assert_eq!(m1.acceleration.y, 0.0);
+        assert_eq!(m.acceleration.x, 0.5);
+        assert_eq!(m.acceleration.y, 0.5);
+    }
 
-        assert_eq!(m2.acceleration.x, 0.1);
-        assert_eq!(m2.acceleration.y, 0.0);
+    #[test]
+    fn test_mover_check_edges() {
+        let mut m = Mover::new(1.0, 101.0, 101.0);
+
+        let force = RVector::new2d(1.0, 2.0);
+
+        m.apply_force(&force);
+        m.update();
+
+        m.check_edges(100.0, 100.0);
+
+        assert_eq!(m.location.x, 100.0);
+        assert_eq!(m.location.y, 100.0);
+        assert_eq!(m.velocity.x, -1.0);
+        assert_eq!(m.velocity.y, -2.0);
     }
 }

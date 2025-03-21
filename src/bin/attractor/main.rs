@@ -41,11 +41,9 @@ impl World for WorldOfAttractors {
         canvas.present();
     }
 
-    fn setup(&self, canvas: &mut Canvas<sdl2::video::Window>) {
-        
-    }
+    fn setup(&self, _canvas: &mut Canvas<sdl2::video::Window>) {}
 
-    fn update(&mut self, delta_time: u32) {
+    fn update(&mut self, _delta_time: u32) {
         let (_w, _h): (u32, u32) = self.size();
         for rc in self.movers.iter_mut() {
             let m = rc.get_mut();

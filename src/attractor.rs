@@ -1,7 +1,7 @@
-
 use sdl2::gfx::primitives::DrawRenderer;
 use sdl2::video::Window;
 use sdl2::{pixels::Color, render::Canvas};
+use std::error::Error;
 
 use crate::mover::Mover;
 use crate::rvector::RVector;
@@ -22,7 +22,7 @@ impl Attractor {
         }
     }
 
-    pub fn display(&self, canvas: &mut Canvas<Window>) -> Result<(), String> {
+    pub fn display(&self, canvas: &mut Canvas<Window>) -> Result<(), Box<dyn Error>> {
         canvas.ellipse(
             (self.location.x as i16).try_into().unwrap(),
             (self.location.y as i16).try_into().unwrap(),
@@ -60,7 +60,7 @@ fn constrain(v: f32, min: f32, max: f32) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_new_attractor() {
         let attractor = Attractor::new(10.0, 20.0, 5.0);
@@ -69,20 +69,20 @@ mod tests {
         assert_eq!(attractor.location.y, 20.0);
         assert_eq!(attractor.g_coef, 1.0);
     }
-    
+
     #[test]
     fn test_constrain() {
         assert_eq!(constrain(15.0, 10.0, 20.0), 15.0);
         assert_eq!(constrain(5.0, 10.0, 20.0), 10.0);
         assert_eq!(constrain(25.0, 10.0, 20.0), 20.0);
     }
-    
+
     #[test]
     fn test_attract() {
         let attractor = Attractor::new(0.0, 0.0, 10.0);
         let mover = Mover::new(5.0, 5.0, 1.0);
         let force = attractor.attract(&mover);
-        
+
         assert_eq!(force.x, -1.885732);
         assert_eq!(force.y, -0.3771464);
     }

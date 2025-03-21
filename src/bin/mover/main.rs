@@ -45,6 +45,7 @@ pub fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
     'running: loop {
+
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
 
@@ -65,7 +66,8 @@ pub fn main() {
         m.display(&mut canvas).ok();
         m.check_edges(WIDTH as f32, HEIGHT as f32);
 
+
         canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
+        ::std::thread::sleep(Duration::new(0, 1_000_000_u32 / 60));
     }
 }

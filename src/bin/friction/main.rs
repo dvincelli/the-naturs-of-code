@@ -42,11 +42,9 @@ impl World for WorldWithFriction {
         canvas.present();
     }
 
-    fn setup(&self, canvas: &mut Canvas<sdl2::video::Window>) {
-        
-    }
+    fn setup(&self, _canvas: &mut Canvas<sdl2::video::Window>) {}
 
-    fn update(&mut self, delta_time: u32) {
+    fn update(&mut self, _delta_time: u32) {
         let (w, h) = self.size();
         for rc in self.movers.iter_mut() {
             let m = rc.get_mut();

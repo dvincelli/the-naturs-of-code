@@ -48,9 +48,7 @@ impl World for WorldWithFluidResistance {
         canvas.present();
     }
 
-    fn setup(&self, canvas: &mut Canvas<sdl2::video::Window>) {
-        
-    }
+    fn setup(&self, _canvas: &mut Canvas<sdl2::video::Window>) {}
 
     fn update(&mut self, delta_time: u32) {
         let (w, h) = self.size();
